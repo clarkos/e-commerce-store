@@ -33,6 +33,7 @@ const MainNav: React.FC<MainNavProps> = ({
             route.active ? "text-black" : "text-neutral-500"
           )}
         >
+          {route.label}
         </Link>
       ))}
     </nav>
