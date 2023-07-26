@@ -1,39 +1,45 @@
 "use client"
 
-import { Product } from "@/types";
-
 import Image from "next/image";
 import { Expand, ShoppingCart } from "lucide-react";
-
-import IconButton from "@/components/ui/IconButton";
-import Currency from "@/components/Currency";
+import { MouseEventHandler } from "react";
 import { useRouter } from "next/navigation";
+import { Product } from "@/types";
+
+import usePreviewModal from "@/hooks/usePreviewModal";
+import Currency from "@/components/Currency";
+import IconButton from "@/components/ui/IconButton";
 
 interface ProdCardProps {
   data: Product;
 }
 
 const ProdCard: React.FC<ProdCardProps> = ({ data }) => {
-
+  const previewModal = usePreviewModal();
   const router = useRouter();
 
   const handleClick = () => {
     router.push(`/product/${data?.id}`);
   }
 
+  const onPreview: MouseEventHandler<HTMLButtonElement> = (event) => {
+    event.stopPropagation();
+    previewModal.onOpen(data);
+  }
+
   return (
     <div onClick={handleClick} className="bg-white group cursor-pointer rounded-xl border p-3 space-y-4">
       <div className="aspect-square rounded-xl bg-gray-100 relative">
         <Image 
-          src={data?.images?.[0].url}
+          src={data?.images?.[0]?.url}
           fill
-          alt="image"
+          alt=""
           className="aspect-square object-cover rounded-md"
         />
         <div className="opacity-0 group-hover:opacity-100 transition absolute w-full px-6 bottom-5">
           <div className="flex gap-x-6 justify-center">
             <IconButton 
-              onClick={() => {}}
+              onClick={onPreview}
               icon={<Expand size={20} className="text-gray-600"/> }
             />
             <IconButton 
