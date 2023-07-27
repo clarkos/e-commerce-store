@@ -14,7 +14,9 @@ interface ProdCardProps {
   data: Product;
 }
 
-const ProdCard: React.FC<ProdCardProps> = ({ data }) => {
+const ProdCard: React.FC<ProdCardProps> = ({ 
+  data 
+}) => {
   const previewModal = usePreviewModal();
   const router = useRouter();
 
@@ -24,14 +26,15 @@ const ProdCard: React.FC<ProdCardProps> = ({ data }) => {
 
   const onPreview: MouseEventHandler<HTMLButtonElement> = (event) => {
     event.stopPropagation();
+
     previewModal.onOpen(data);
-  }
+  };
 
   return (
     <div onClick={handleClick} className="bg-white group cursor-pointer rounded-xl border p-3 space-y-4">
       <div className="aspect-square rounded-xl bg-gray-100 relative">
         <Image 
-          src={data?.images?.[0]?.url}
+          src={data.images?.[0]?.url}
           fill
           alt=""
           className="aspect-square object-cover rounded-md"
@@ -51,12 +54,8 @@ const ProdCard: React.FC<ProdCardProps> = ({ data }) => {
       </div>
 
       <div>
-        <p className="font-logoMain font-semibold text-lg">
-          {data.name}
-        </p>
-        <p className="font-logoSub italic text-sm">
-          {data.category?.name}
-        </p>
+        <p className="font-logoMain font-semibold text-lg">{data.name}</p>
+        <p className="font-logoSub italic text-sm">{data.category?.name}</p>
       </div>
       <div className="font-logoMain flex items-center justify-between">
         <Currency value={data?.price} />
