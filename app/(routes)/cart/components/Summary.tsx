@@ -8,21 +8,42 @@ import { WalletCards, Trash } from "lucide-react";
 import Button from "@/components/ui/Button";
 import Currency from "@/components/Currency";
 import useCart from "@/hooks/useCart";
+import axios from "axios";
 
 export default function SummaryPage () {
 
   const items = useCart((state) => state.items);
   const removeAll = useCart((state) => state.removeAll);
   const searchParams = useSearchParams();
-  let totalCart = items.reduce((total, item) => {
+
+  const totalCart = items.reduce((total, item) => {
     return total + Number(item.price)
   }, 0);
 
+  const onCheckout = async () => {
+    try {      
+      const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/checkout`, {
+        productIds: items.map((item) => item.id),
+      });
+      window.location = response.data.url;
+    } catch (error) {
+      toast.error("Something went wrong during comunication.")
+      console.log("PAYMENT_ERROR: ", error)
+    }
+  }
 
-  // useEffect(() => {
-  //    items.forEach((item) => totalCart += Number(item.price))
-  //    toast.success("Cart updated.");
-  // }, [items])
+  useEffect(() => {
+    
+      if (searchParams.get('success')){
+        toast.success("Payment Completed.");
+        removeAll();
+      } 
+      
+      if (searchParams.get('canceled')){
+        toast.error("Something went wrong during payment.");
+      }
+
+  }, [searchParams, removeAll])
 
   return (
     <div className="mt-16 rounded-lg bg-gray-100 ml-4 px-4 py-6 sm:p-6 md:col-span-5 md:mt-0 md:p-8">
@@ -41,13 +62,13 @@ export default function SummaryPage () {
       </div>
  
       <div className="flex md:justify-evenly sm:justify-end flex-wrap-reverse pt-8 gap-y-4 gap-x-2">
-        <Button onClick={() => {}} className="flex items-center justify-center w-full bg-white hover:bg-red-500 hover:opacity-80 border border-gray-300 px-4 py-2 text-black hover:text-white">
+        <Button onClick={removeAll} className="flex items-center justify-center w-full bg-white hover:bg-red-500 hover:opacity-80 border border-gray-300 px-4 py-2 text-black hover:text-white">
           <Trash size={15} />
           <span className="ml-2 text-sm font-medium">
             Discard
           </span>
         </Button>
-        <Button onClick={removeAll} className="flex items-center justify-center w-full bg-green-800 hover:bg-green-600 hover:opacity-100 px-4 py-2">
+        <Button onClick={onCheckout} className="flex items-center justify-center w-full bg-green-800 hover:bg-green-600 hover:opacity-100 px-4 py-2">
           <WalletCards size={15} />
           <span className="ml-2 text-sm font-bold">
             Checkout
