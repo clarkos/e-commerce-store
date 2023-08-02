@@ -17,10 +17,10 @@ const CartPage = () => {
   if (!isMounted) return null;
 
   return (
-    <div className="bg-white">
+    <div>
       <Container>
         <div className="px-4 py-16 sm:px-6 md:px-8">
-          <h1 className="text-3xl font-bold text-black">
+          <h1 className="text-3xl font-bold">
             Shopping Cart
             <div className="mt-12 md:grid md:grid-cols-12 md:items-start gap-x-12">
               <div className="md:col-span-7">

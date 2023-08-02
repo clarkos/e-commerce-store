@@ -53,7 +53,7 @@ export default function SummaryPage() {
           <p className="text-base font-medium text-gray-900">
             Order total
           </p>
-          <p className="text-md font-bold">
+          <p className="text-md font-bold text-gray-800">
             <Currency value={totalCart} />
           </p>
         </div>

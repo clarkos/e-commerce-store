@@ -16,8 +16,8 @@ interface ProdCardProps {
   data: Product;
 }
 
-const ProdCard: React.FC<ProdCardProps> = ({ 
-  data 
+const ProdCard: React.FC<ProdCardProps> = ({
+  data
 }) => {
   const cart = useCart()
   const previewModal = usePreviewModal();
@@ -33,14 +33,14 @@ const ProdCard: React.FC<ProdCardProps> = ({
   };
 
   const onAddToCart: MouseEventHandler<HTMLButtonElement> = (event) => {
-      event.stopPropagation();
-      cart.addItem(data);
+    event.stopPropagation();
+    cart.addItem(data);
   }
 
   return (
-    <div onClick={handleClick} className="bg-white group cursor-pointer rounded-xl border p-3 space-y-4">
+    <div onClick={handleClick} className="group cursor-pointer rounded-xl border p-3 space-y-4">
       <div className="aspect-square rounded-xl bg-gray-100 relative">
-        <Image 
+        <Image
           src={data.images?.[0]?.url}
           fill
           alt=""
@@ -48,13 +48,15 @@ const ProdCard: React.FC<ProdCardProps> = ({
         />
         <div className="opacity-0 group-hover:opacity-100 transition absolute w-full px-6 bottom-5">
           <div className="flex gap-x-6 justify-center">
-            <IconButton 
+            <IconButton
+              className="bg-neutral-800 bg-opacity-60"
               onClick={onPreview}
-              icon={<Expand size={20} className="text-gray-600"/> }
+              icon={<Expand size={20} className="text-gray-300" />}
             />
-            <IconButton 
+            <IconButton
+              className="bg-neutral-800 bg-opacity-60"
               onClick={onAddToCart}
-              icon={<ShoppingCart size={20} className="text-gray-600"/> }
+              icon={<ShoppingCart size={20} className="text-gray-300" />}
             />
           </div>
         </div>
